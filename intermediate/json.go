@@ -1,0 +1,91 @@
+package intermediate
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+)
+
+type Person struct {
+	FirstName    string  `json:"name"`
+	Age          int     `json:"age,omitempty"`
+	EmailAddress string  `json:"email,omitempty"`
+	Address      Address `json:"address"`
+}
+
+type Address struct {
+	City  string `json:"city"`
+	State string `json:"state"`
+}
+
+func main() {
+
+	// person := Person{FirstName: "Simon", Age: 13, EmailAddress: "simon@correo.com"}
+	person := Person{FirstName: "Simon"}
+
+	// MArshalling
+	jsondata, err := json.Marshal(person)
+	if err != nil {
+		fmt.Println("Error marshalling to JSON:", err)
+		return
+	}
+
+	fmt.Println(string(jsondata))
+
+	person1 := Person{FirstName: "Simon", Age: 13, EmailAddress: "simon.golden@gmail.com", Address: Address{City: "Santiago", State: "Region Metropolitana"}}
+
+	jsondata1, err := json.Marshal(person1)
+	if err != nil {
+		fmt.Println("Error marshalling to JSON:", err)
+	}
+
+	fmt.Println(string(jsondata1))
+
+	jsonData1 := `{"full_name": "Simon Golden", "emp_id": "0009", "age": 13, "address":{"city":"Santiago","state":"Region Metropolitana"}}`
+
+	var employeeFromJson Employee
+
+	err = json.Unmarshal([]byte(jsonData1), &employeeFromJson)
+	if err != nil {
+		fmt.Println("Error unmarshalling JSON:", err)
+		return
+	}
+
+	fmt.Println(employeeFromJson)
+	fmt.Println("Simon's Age increased by 5 years", employeeFromJson.Age+5)
+	fmt.Println("Simon's city:", employeeFromJson.Address.City)
+
+	listOfCityState := []Address{
+		{City: "New York", State: "NY"},
+		{City: "San Jose", State: "CA"},
+		{City: "Las Vegas", State: "NV"},
+		{City: "Modesto", State: "CA"},
+		{City: "Clearwater", State: "FL"},
+	}
+	fmt.Println(listOfCityState)
+	jsonList, err := json.Marshal(listOfCityState)
+	if err != nil {
+		log.Fatalln("Error Marshalling to JSON:", err)
+	}
+
+	fmt.Println("JSON List of States:", string(jsonList))
+
+	//Handling unknown json structures
+	jsonData2 := `{"name": "John", "age": 30, "address": {"city": "New York", "state": "NY"}}`
+	var data map[string]interface{}
+	err = json.Unmarshal([]byte(jsonData2), &data)
+	if err != nil {
+		log.Fatalln("Error Unmarshalling Unknown JSON:", err)
+		return
+	}
+	fmt.Println("Unmarshall Data:", data)
+	fmt.Println("Unmarshall Data:", data["address"])
+	fmt.Println("Unmarshall Data:", data["name"])
+}
+
+type Employee struct {
+	FullName string  `json:"full_name"`
+	EmpID    string  `json:"emp_id"`
+	Age      int     `json:"age"`
+	Address  Address `json:"address"`
+}

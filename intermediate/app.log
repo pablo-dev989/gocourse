@@ -1,0 +1,6 @@
+INFO: 2026/03/03 11:46:58 logging.go:31: This is a debbug message.
+DEBUG: 2026/03/03 11:48:03 logging.go:31: This is a debbug message.
+DEBUG: 2026/03/03 11:52:18 logging.go:35: This is a debbug message.
+WARN: 2026/03/03 11:52:18 This is a warning message
+INFO: 2026/03/03 11:52:18 logging.go:37: This is a info message
+ERROR: 2026/03/03 11:52:18 logging.go:38: This is a error message
